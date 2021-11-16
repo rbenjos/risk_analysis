@@ -2,11 +2,10 @@
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import json
 import os
-
+from utils import logfile
+import sys
 
 
 def simplify_prognoses(json_string):
@@ -33,15 +32,13 @@ def extract_expected(json_string):
     return rba_dic['expected']
 
 
-
 def extract_prognosis_value(json_string):
     rbe_list = json.loads(json_string)
     rbe_dic = json.loads(rbe_list['basic'][0])
     return rbe_dic['prognosisValue']
 
 
-
-def simplify(directory, filename):
+def simplify(directory, filename, log):
     chunks = pd.read_csv(f"{directory}\\{filename}", chunksize=10000)
 
     if not os.path.exists(directory):
@@ -51,12 +48,17 @@ def simplify(directory, filename):
     header = True
     for chunk in chunks:
         simplified_chunk = chunk[['modelId', 'ownerId', 'timeFrom', 'prognoses']]
-        simplified_chunk['prognoses'] = simplified_chunk['prognoses'].apply(simplify_prognoses)
+        simplified_chunk.loc['prognoses'] = simplified_chunk['prognoses'].apply(simplify_prognoses)
 
         simplified_chunk.to_csv(f"{directory}\primary_simplified.csv",
                                 index=False, mode='a', header=header)
-        print(f"saved chunk: {i}")
+        log(f"saved chunk: {i}")
         i += 1
         header = False
 
 
+if __name__ == "__main__":
+    filepath = sys.argv[1]
+    directory, filename = os.path.split(filepath)
+    log = logfile(directory)
+    simplify(directory, filename,log)
