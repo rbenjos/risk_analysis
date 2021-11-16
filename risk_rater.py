@@ -42,14 +42,14 @@ def rater(directory, rate):
 
     # reading the must stations (actualy customers)
 
-    must_customers = pd.read_csv("..\data\\must_meters.csv")
+    must_customers = pd.read_csv("..\\must_meters.csv")
     must_customers_vals = must_customers['Must Customers'].values
 
     # %%
 
     # and deriving the actual stations we need to keep (one customer -> many stations/meters)
     must_station = [station for station in added_risk.columns for must in must_customers_vals if must in station]
-    pd.Series(must_station).to_csv('..\data\\must_stations.csv')
+    pd.Series(must_station).to_csv('..\\must_stations.csv')
 
     # finally lets drop them as they are not important in the risk analysis, they will stay anyway
     added_risk_non_must = added_risk.drop(columns=must_station)
