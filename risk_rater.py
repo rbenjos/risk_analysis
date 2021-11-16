@@ -11,7 +11,7 @@ print('done importing')
 
 
 
-def rate(directory, rate):
+def rater(directory, rate):
     # estimating the most dangerous non must stations based on the added risk
 
     added_risk = pd.read_csv(f'{directory}\\added_risk_by_station_smooth.csv')
@@ -141,6 +141,5 @@ def rate(directory, rate):
 
 
 if __name__ == "__main__":
-    filepath = sys.argv[1]
-    directory, filename = os.path.split(filepath)
-    rate(directory, filename)
+    directory,rate = sys.argv[1],sys.argv[2]
+    rater(directory, rate)
