@@ -82,7 +82,7 @@ def rater(directory, rate):
     # now we need to rename all the aggregates files so we can iterate over them
     import os
     for file in os.listdir(f"{directory}\stations_agg"):
-        name = (file.split('.')[0])
+        name = (file.split('.')[:-1])
         new_name = meter_to_name(name)
         if file in os.listdir(f"{directory}\stations_agg"):
             os.rename(f'{directory}\stations_agg\\{file}', f'{directory}\stations_agg\\{new_name}.csv')
