@@ -48,7 +48,8 @@ def simplify(directory, filename, log):
     header = True
     for chunk in chunks:
         simplified_chunk = chunk[['modelId', 'ownerId', 'timeFrom', 'prognoses']]
-        simplified_chunk.loc['prognoses'] = simplified_chunk['prognoses'].apply(simplify_prognoses)
+        simp_prog = simplified_chunk['prognoses'].apply(simplify_prognoses)
+        simplified_chunk.loc['prognoses'] = simp_prog
 
         simplified_chunk.to_csv(f"{directory}\primary_simplified.csv",
                                 index=False, mode='a', header=header)
@@ -61,4 +62,4 @@ if __name__ == "__main__":
     filepath = sys.argv[1]
     directory, filename = os.path.split(filepath)
     log = logfile(directory)
-    simplify(directory, filename,log)
+    simplify(directory, filename, log)
