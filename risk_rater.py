@@ -22,7 +22,7 @@ def rater(directory, rate):
 
     # lets read all the meters so we can map from meter number to the name of the station
 
-    meters = pd.read_csv('..\data\\OPC-Meters.csv')
+    meters = pd.read_csv(f'{directory}\\..\\OPC-Meters.csv')
 
     def meter_to_name(meterId):
         name = meters.loc[meters['meterId'] == meterId]['name']
@@ -42,14 +42,14 @@ def rater(directory, rate):
 
     # reading the must stations (actualy customers)
 
-    must_customers = pd.read_csv("..\\must_meters.csv")
+    must_customers = pd.read_csv(f'{directory}\\..\\must_meters.csv')
     must_customers_vals = must_customers['Must Customers'].values
 
     # %%
 
     # and deriving the actual stations we need to keep (one customer -> many stations/meters)
     must_station = [station for station in added_risk.columns for must in must_customers_vals if must in station]
-    pd.Series(must_station).to_csv('..\\must_stations.csv')
+    pd.Series(must_station).to_csv(f'{directory}\\must_stations.csv')
 
     # finally lets drop them as they are not important in the risk analysis, they will stay anyway
     added_risk_non_must = added_risk.drop(columns=must_station)
@@ -84,7 +84,7 @@ def rater(directory, rate):
     for file in os.listdir(f"{directory}\stations_agg"):
         name = (file.split('.')[0])
         new_name = meter_to_name(name)
-        if name in os.listdir(f"{directory}\stations_agg"):
+        if file in os.listdir(f"{directory}\stations_agg"):
             os.rename(f'{directory}\stations_agg\\{file}', f'{directory}\stations_agg\\{new_name}.csv')
 
     # %%
