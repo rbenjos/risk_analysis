@@ -1,19 +1,13 @@
-# %%
 
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import json
 import os
 from utils import logfile
 import sys
 
-# %%
-
-def divider(directory, filename,lop):
+def divider(directory, filename,log):
     chunks = pd.read_csv(f"{directory}\\{filename}", chunksize=10000)
-
     if not os.path.exists(f"{directory}\\stations"):
         os.mkdir(f"{directory}\\stations")
     # lets divide it to different stations:
@@ -28,10 +22,8 @@ def divider(directory, filename,lop):
             log(f"saving to station: {station_id}")
 
 
-# %%
 
-
-if __name__ == 'main':
+if __name__ == '__main__':
     filepath = sys.argv[1]
     directory, filename = os.path.split(filepath)
     log = logfile(directory)
