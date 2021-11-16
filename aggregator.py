@@ -33,7 +33,7 @@ def aggregate(directory, filename, log):
         os.mkdir(f"{directory}\\stations_agg_without")
     for counter, owner in enumerate(ownerIds):
         agg_without[owner] = pt.subtract(pts_ind[owner], fill_value=0)
-        log(f'done subtracting station {owner}. {counter}/{len(ownerIds)}')
+        print(f'done subtracting station {owner}. {counter}/{len(ownerIds)}')
         agg_without[owner].to_csv(f"{directory}\\stations_agg_without\\{owner}.csv", header=True)
 
     print('done summarizing and subtracting')
@@ -66,7 +66,9 @@ def aggregate(directory, filename, log):
         risk_without.columns = np.linspace(min_val, max_val, 100)
         risk_diff = all_risk.subtract(risk_without, fill_value=0)
         max_risk_diff[owner] = risk_diff.max(axis=0)
-        log(f'done assesing risk of station {owner}. {counter}/{len(ownerIds)}')
+        message = f'done assesing risk of station {owner}. {counter}/{len(ownerIds)}'
+        log(message)
+        print(message)
 
     max_risk_station = pd.DataFrame(max_risk_diff)
     max_risk_station.to_csv(f'{directory}\\added_risk_by_station_smooth.csv', header=True)
