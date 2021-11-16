@@ -90,12 +90,12 @@ def rater(directory, rate):
 
     # %%
 
-    for idx, station in enumerate(os.listdir(f"{directory}\\stations_agg")):
+    for idx, station in enumerate(must_station):
         if must_pt is None:
             print('first time')
-            must_pt = pd.read_csv(f'{directory}\\stations_agg\\{station}', index_col='timeFrom').fillna(0)
+            must_pt = pd.read_csv(f'{directory}\\stations_agg\\{station}.csv', index_col='timeFrom').fillna(0)
         else:
-            station_pt = pd.read_csv(f'{directory}\\stations_agg\\{station}', index_col='timeFrom').fillna(0)
+            station_pt = pd.read_csv(f'{directory}\\stations_agg\\{station}.csv', index_col='timeFrom').fillna(0)
             must_pt = must_pt.add(station_pt, fill_value=0)
         print(f'done adding station {station}, {idx}/{len(must_station)}')
 
@@ -113,7 +113,7 @@ def rater(directory, rate):
     least_risky = max_risk_stations[::-1]
     all_pt = must_pt
     non_must_pt = None
-    for idx, station in enumerate(os.path):
+    for idx, station in enumerate(least_risky):
         station_pt = pd.read_csv(f'{directory}\stations_agg\\{station}.csv', index_col='timeFrom').fillna(0)
         # again adjusting the consumption rate
         station_pt *= 2
