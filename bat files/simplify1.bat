@@ -1,0 +1,3 @@
+python C:\Users\Administrator\Desktop\OPC\risk_analysis\primary_simplifier.py C:\Users\Administrator\Desktop\OPC\April-19\Primaries-April-2019.csv
+python C:\Users\Administrator\Desktop\OPC\risk_analysis\primary_simplifier.py C:\Users\Administrator\Desktop\OPC\May-20\Primaries-May-2020.csv
+python C:\Users\Administrator\Desktop\OPC\risk_analysis\primary_simplifier.py C:\Users\Administrator\Desktop\OPC\July-20\July-2020.csv
