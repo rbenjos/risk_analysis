@@ -141,5 +141,5 @@ def rater(directory, rate):
 
 
 if __name__ == "__main__":
-    directory,rate = sys.argv[1],sys.argv[2]
+    directory,rate = sys.argv[1],int(sys.argv[2])
     rater(directory, rate)
