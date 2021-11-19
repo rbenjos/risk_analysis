@@ -1,5 +1,7 @@
 
-
+"""
+an attempt to seperate the rating from the renaming
+"""
 
 import numpy as np
 import pandas as pd
