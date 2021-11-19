@@ -22,7 +22,8 @@ def alt_risk_rater(directory, filename):
     pt_by_station['total'] = pt_by_station.sum(axis=1)
     # and adjust for hourly consumption
     pt_by_station *= 2
-
+    pt_by_station.index = pd.to_datetime(pt_by_station.index)
+    
     # the following is a list of station ranked by the number of zero values they have
     stations_by_zero_values = (pt_by_station == 0).sum(axis=0).sort_values(ascending=False)
 
@@ -62,12 +63,21 @@ def alt_risk_rater(directory, filename):
     # doing the same for total consumption might also be right, that way
     # we can measure risk against importance again
 
-    pt_by_station_to_rank.sum().sort_values(ascending=False)[1:]
+    meters_by_consumption = pt_by_station_to_rank.sum()
+    stations_risk_cons = pd.DataFrame(
+        {'effect_on_max': pd.Series(effect_by_meter), 'consumption': meters_by_consumption})
+    stations_risk_cons['ratio'] = stations_risk_cons['effect_on_max'] / stations_risk_cons['consumption']
+    # lets save that
+    stations_risk_cons.sort_values('ratio', ascending=False).to_csv('station_risk_consumption.csv')
 
-    # %%
 
-    # %%
+    # additionaly we can extract their daily maximums and work with that
+    daily_max = pt_by_station_to_rank.groupby(by=pt_by_station_to_rank.index.day).max()
+    daily_max_std = daily_max.apply(np.std, axis=0)[:-1].sort_values()
+    daily_max.to_csv('daily_maxes.csv', header=True)
 
+
+    # finally, picking them by their total max effect until they get to a certain threshold
     rate = 400
     meters_included = must_meters_used
     for meter in meters_by_risk.index:
@@ -76,8 +86,6 @@ def alt_risk_rater(directory, filename):
             break
         meters_included.append(meter)
 
-    pt_by_station[meters_included].shape
 
-    # %%
-
-    meters_by_risk[len(meters_included):]
+    # and takning the least risky meters
+    least_risky = meters_by_risk[len(meters_included):]
