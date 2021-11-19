@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import logging
 from scipy.stats import norm, gaussian_kde
-from utils import logfile
 import os
 import sys
 
