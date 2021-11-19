@@ -118,14 +118,14 @@ def rater(directory, rate):
         # again adjusting the consumption rate
         station_pt *= 2
         all_pt = all_pt.add(station_pt, fill_value=0)
-        if all_pt.max().max() > rate * 1000:
+        if all_pt.max().max() > rate * 10000:
             all_pt = all_pt.subtract(station_pt, fill_value=0)
             break
         print(f'done adding station {station}, {idx}/{len(least_risky)}')
 
     # %%
 
-    all_pt.max().max()
+    print(all_pt.max().max())
     least_risky[:idx].to_csv(f'{directory}\\stations_to_{rate}.csv')
 
     # %%
